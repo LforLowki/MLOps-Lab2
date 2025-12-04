@@ -1,18 +1,14 @@
 import gradio as gr
 import requests
 
-# URL of your deployed Render API
 API_URL = "https://lab2-api-latest.onrender.com"
 
 def predict_image(file):
     try:
-        # Open the file in binary mode and send as multipart/form-data
-        with open(file.name, "rb") as f:
-            # The tuple: (filename, file object, MIME type)
-            files = {"file": (file.name, f, "image/jpeg")}
-            response = requests.post(f"{API_URL}/predict", files=files, timeout=10)
-            response.raise_for_status()
-            return response.json()
+        files = {"file": (file.name, file.file, "image/jpeg")}
+        response = requests.post(f"{API_URL}/predict", files=files, timeout=10)
+        response.raise_for_status()
+        return response.json()
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
 
